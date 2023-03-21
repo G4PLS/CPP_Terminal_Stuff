@@ -3,7 +3,8 @@
 
 #include <iostream>
 
-typedef bool bit;
+// https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
+// https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h3-Functions-using-CSI-_-ordered-by-the-final-character_s_    
 
 namespace Cursor
 {
@@ -36,7 +37,7 @@ namespace Cursor
     void Erase_Lines(int amount);
     void Insert_Lines(int amount);
     void Erase_Characters(int amount);
-    void Repeat_Character(int amount);
+    void Repeat_Character(char character, int amount);
 
 } // namespace Cursor
 
@@ -44,11 +45,11 @@ namespace Screen
 {
     void Erase_To_End(int x, int y);
     void Erase_To_Begin(int x, int y);
-    void Switch_Screen(bit screen);
+    void Use_Alternate_Screen(bool use_alternate_screen);
     void Clear();
 }
 
-namespace Color
+namespace Text
 {
     typedef unsigned char byte;
 
@@ -62,6 +63,22 @@ namespace Color
         {}
     };
 
+    enum Text_Attribute
+    {
+        // \033[#m
+        DEFAULT = 0,
+        BOLD = 1,
+        FAINT = 2,
+        ITALIC = 3,
+        UNDERLINED = 4,
+        BLINK = 5,
+        INVERSE = 7,
+        INVISIBLE = 8,
+        CROSSED = 9,
+        DOUBLE_UNDERLINE = 21
+    };
+
+    #pragma region RGB Constants
     const RGB BLACK(0, 0, 0);
     const RGB WHITE(255, 255, 255);
     const RGB GRAY(128, 128, 128);
@@ -92,24 +109,32 @@ namespace Color
     const RGB LIGHT_PURPLE(178, 102, 255);
     const RGB LIGHT_PINK(255, 102, 255);
 
+    const RGB BROWN(160, 82, 45);
+    const RGB DARK_BROWN(101, 67, 33);
+    const RGB LIGHT_BROWN(181, 101, 29);
+    #pragma endregion
+
     void Set_FG_RGB(RGB rgb);
     void Set_BG_RGB(RGB rgb);
+    void Set_FG_BG_RGB(RGB fg, RGB bg);
     void Set_FG_Pallete(byte id);
     void Set_BG_Pallete(byte id);
+    void Set_FG_BG_Pallete(byte id_fg, byte id_bg);
+    void Set_Text_Attribute(Text_Attribute attribute);
+    void Reset_Color();
+    void Reset_Attributes();
+    void Reset_All();
 }
 
-enum Character_Attributes
-    {
-        // \033[#m
-        DEFAULT = 0,
-        BOLD = 1,
-        FAINT = 2,
-        ITALIC = 3,
-        UNDERLINED = 4,
-        INVERSE = 7,
-        INVISIBLE = 8,
-        CROSSED = 9,
-        DOUBLE_UNDERLINE = 21
-    };
+void Write_At_Pos(char message[], int x, int y);
+void Write_At_Pos(char message[], int x, int y, Text::Text_Attribute attr);
+void Write_At_Pos(char message[], int x, int y, Text::Text_Attribute attr[]);
+void Write_At_Pos(char message[], int x, int y, Text::RGB fg);
+void Write_At_Pos(char message[], int x, int y, Text::RGB fg, Text::RGB bg);
+void Write_At_Pos(char message[], int x, int y, Text::RGB fg, Text::RGB bg, Text::Text_Attribute attr);
+void Write_At_Pos(char message[], int x, int y, Text::RGB fg, Text::RGB bg, Text::Text_Attribute attr[]);
+
+void Repeat_Char_At_Pos(int x, int y, int amount);
+
 
 #endif
