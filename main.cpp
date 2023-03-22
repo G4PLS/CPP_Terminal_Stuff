@@ -1,10 +1,23 @@
 #include <iostream>
 #include "terminal_utils.h"
+#include "Shapes/shape.h"
 
 int main()
 {
-    Text::Set_Text_Attribute(Text::Text_Attribute::BLINK);
-    Write_At_Pos(" ", 4, 1, Text::BLACK, Text::RED);
+    char x;
+
+    Screen::Clear();
+    Cursor::Reset();
+
+    Circle c(10, 5, 2);
+    c.Set_BG(Text::DARK_BLUE);
+    c.Set_FG(Text::CYAN);
+    c.Set_Text_Attribute(Text::BLINK);
+    c.Set_Draw_Char('#');
+    c.Draw();
+
+    Cursor::Set(0, 15);
+    /*Write_At_Pos(" ", 4, 1, Text::BLACK, Text::RED);
     Write_At_Pos(" ", 5, 1, Text::BLACK, Text::RED);
     Write_At_Pos(" ", 6, 1, Text::BLACK, Text::RED);
     Write_At_Pos(" ", 7, 1, Text::BLACK, Text::RED);
@@ -77,6 +90,6 @@ int main()
     Write_At_Pos(" ", 9, 7, Text::BLACK, Text::PINK);
     Write_At_Pos(" ", 10, 7, Text::BLACK, Text::PINK);
     Write_At_Pos(" ", 11, 7, Text::BLACK, Text::PINK);
-    Cursor::Down(1);
+    Cursor::Down(1);*/
     return -1;
 }

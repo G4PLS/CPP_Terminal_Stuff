@@ -55,12 +55,13 @@ namespace Text
 
     struct RGB
     {
-        byte r;
-        byte g;
-        byte b;
+        byte r = 0;
+        byte g = 0;
+        byte b = 0;
 
         RGB(byte r, byte g, byte b) : r(r), g(g), b(b)
         {}
+        RGB() {}
     };
 
     enum Text_Attribute

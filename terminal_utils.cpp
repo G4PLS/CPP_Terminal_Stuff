@@ -89,8 +89,8 @@ void Write_At_Pos(char message[], int x, int y, Text::RGB fg, Text::RGB bg)
 void Write_At_Pos(char message[], int x, int y, Text::RGB fg, Text::RGB bg, Text::Text_Attribute attr) 
 {
     Cursor::Set(x, y);
-    Text::Set_FG_BG_RGB(fg, bg);
     Text::Set_Text_Attribute(attr);
+    Text::Set_FG_BG_RGB(fg, bg);
     std::cout << message;
     Text::Reset_All();
 }
@@ -98,10 +98,11 @@ void Write_At_Pos(char message[], int x, int y, Text::RGB fg, Text::RGB bg, Text
 void Write_At_Pos(char message[], int x, int y, Text::RGB fg, Text::RGB bg, Text::Text_Attribute attr[]) 
 {
     Cursor::Set(x, y);
-    Text::Set_FG_BG_RGB(fg, bg);
-
+    
     for(int i = 0; i < (sizeof(attr) / sizeof(attr[0])); i++)
         Text::Set_Text_Attribute(attr[i]);
+
+    Text::Set_FG_BG_RGB(fg, bg);
 
     int z [] = {1, 2, 3, 4, 5};
     int w = sizeof(x);
