@@ -17,6 +17,17 @@ void Line::Draw(char draw_char)
         y0 > y1 ? Draw_Negative_Slope(x1, y1, x0, y0) : Draw_Negative_Slope(x0, y0, x1, y1);
 }
 
+void Line::Delete()
+{
+    Text::Reset_All();
+    
+    this->draw_char[0] = ' ';
+    if(abs(y1 - y0) < abs(x1 - x0))
+        x0 > x1 ? Draw_Positive_Slope(x1, y1, x0, y0) : Draw_Positive_Slope(x0, y0, x1, y1);
+    else 
+        y0 > y1 ? Draw_Negative_Slope(x1, y1, x0, y0) : Draw_Negative_Slope(x0, y0, x1, y1);
+}
+
 void Line::Draw_Positive_Slope(int x0, int y0, int x1, int y1)
 {
     int dx = x1 - x0;

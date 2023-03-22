@@ -42,6 +42,7 @@ class Line
     Line(int x0, int y0, int x1, int y1);
 
     void Draw(char draw_char);
+    void Delete();
 };
 
 class Rect : public Shape
@@ -65,11 +66,10 @@ class Mid_Point_Rect : public Shape
     int radius = 1;
     int xc;
     int yc;
-
     int temp_x = -1;
     int temp_y = -1;
     int temp_r = -1;
-    void Place_Points(char draw_char[2], int x, int y);
+    void Place_Points();
 
     public:
     Mid_Point_Rect(int x, int y, int radius);
@@ -90,8 +90,7 @@ class Circle : public Shape
     int temp_x;
     int temp_y;
     int temp_r;
-
-    void Place_Points(char draw_char[2], int x, int y);
+    void Place_Points();
 
     public:
     Circle(int xc, int yc, int radius);
@@ -102,6 +101,32 @@ class Circle : public Shape
     void Redraw() override;
     void Delete() override;
 
+};
+
+class Ellipse : public Shape
+{
+    private:
+    int rx;
+    int ry;
+    int xc;
+    int yc;
+    int temp_x;
+    int temp_y;
+    int temp_rx;
+    int temp_ry;
+    void Draw_Points();
+
+    public:
+    Ellipse(int xc, int yc, int rx, int ry);
+    void Set_X(int x);
+    void Set_Y(int y);
+    void Set_Radius_X(int rx);
+    void Set_Radius_Y(int ry);
+
+    void Draw() override;
+    void Redraw() override;
+    void Delete() override;
+ 
 };
 
 #endif

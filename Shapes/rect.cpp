@@ -47,6 +47,8 @@ void Rect::Delete()
     lines[3].Draw(' ');
 }
 
+
+
 Mid_Point_Rect::Mid_Point_Rect(int x, int y, int radius)
 {
     this->xc = x;
@@ -77,13 +79,7 @@ void Mid_Point_Rect::Draw()
     Text::Set_Text_Attribute(text_attribute);
     Text::Set_FG_BG_RGB(fg, bg);
 
-    x = 0;
-
-    while(x <= radius)
-    {
-        Place_Points(draw_char, x, radius);
-        x++;
-    }
+    Place_Points();
 
     Text::Reset_All();
 }
@@ -101,23 +97,26 @@ void Mid_Point_Rect::Delete()
 {
     Text::Reset_All();
 
+    char temp = draw_char[0];
+    draw_char[0] = ' ';
+    Place_Points();
+    draw_char[0] = temp;
+}
+
+void Mid_Point_Rect::Place_Points()
+{
     x = 0;
 
     while(x <= radius)
     {
-        Place_Points(" ", x, radius);
+        Write_At_Pos(draw_char,  x + xc,  radius + yc);
+        Write_At_Pos(draw_char,  x + xc, -radius + yc);
+        Write_At_Pos(draw_char, -x + xc, -radius + yc);
+        Write_At_Pos(draw_char, -x + xc,  radius + yc);
+        Write_At_Pos(draw_char,  radius + xc,  x + yc);
+        Write_At_Pos(draw_char,  radius + xc, -x + yc);
+        Write_At_Pos(draw_char, -radius + xc, -x + yc);
+        Write_At_Pos(draw_char, -radius + xc,  x + yc);
         x++;
     }
-}
-
-void Mid_Point_Rect::Place_Points(char draw_char[2], int x, int y)
-{
-    Write_At_Pos(draw_char,  x + xc,  y + yc);
-    Write_At_Pos(draw_char,  x + xc, -y + yc);
-    Write_At_Pos(draw_char, -x + xc, -y + yc);
-    Write_At_Pos(draw_char, -x + xc,  y + yc);
-    Write_At_Pos(draw_char,  y + xc,  x + yc);
-    Write_At_Pos(draw_char,  y + xc, -x + yc);
-    Write_At_Pos(draw_char, -y + xc, -x + yc);
-    Write_At_Pos(draw_char, -y + xc,  x + yc);
 }
