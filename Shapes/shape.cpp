@@ -1,20 +1,18 @@
 #include "shape.h"
 
-Line::Line(int x0, int y0, int x1, int y1)
+Line::Line(Point p1, Point p2)
 {
-    this->x0 = x0;
-    this->y0 = y0;
-    this->x1 = x1;
-    this->y1 = y1;
+    this->p = p1;
+    this->p2 = p2;
 }
 
 void Line::Draw(char draw_char)
 {
     this->draw_char[0] = draw_char;
-    if(abs(y1 - y0) < abs(x1 - x0))
-        x0 > x1 ? Draw_Positive_Slope(x1, y1, x0, y0) : Draw_Positive_Slope(x0, y0, x1, y1);
+    if(abs(p2.Get_Y() - p.Get_Y()) < abs(p2.Get_X() - p.Get_X()))
+        p.Get_X() > p2.Get_X() ? Draw_Positive_Slope(p2, p) : Draw_Positive_Slope(p, p2);
     else 
-        y0 > y1 ? Draw_Negative_Slope(x1, y1, x0, y0) : Draw_Negative_Slope(x0, y0, x1, y1);
+        p.Get_Y() > p2.Get_Y() ? Draw_Negative_Slope(p2, p) : Draw_Negative_Slope(p, p2);
 }
 
 void Line::Delete()
@@ -22,16 +20,16 @@ void Line::Delete()
     Text::Reset_All();
     
     this->draw_char[0] = ' ';
-    if(abs(y1 - y0) < abs(x1 - x0))
-        x0 > x1 ? Draw_Positive_Slope(x1, y1, x0, y0) : Draw_Positive_Slope(x0, y0, x1, y1);
+    if(abs(p2.Get_Y() - p.Get_Y()) < abs(p2.Get_X() - p.Get_X()))
+        p.Get_X() > p2.Get_X() ? Draw_Positive_Slope(p2, p) : Draw_Positive_Slope(p, p2);
     else 
-        y0 > y1 ? Draw_Negative_Slope(x1, y1, x0, y0) : Draw_Negative_Slope(x0, y0, x1, y1);
+        p.Get_Y() > p2.Get_Y() ? Draw_Negative_Slope(p2, p) : Draw_Negative_Slope(p, p2);
 }
 
-void Line::Draw_Positive_Slope(int x0, int y0, int x1, int y1)
+void Line::Draw_Positive_Slope(Point p, Point p2)
 {
-    int dx = x1 - x0;
-    int dy = y1 - y0;
+    int dx = p2.Get_X() - p.Get_X();
+    int dy = p2.Get_Y() - p.Get_Y();
     int yi = 1;
 
     if(dy < 0)
@@ -41,9 +39,9 @@ void Line::Draw_Positive_Slope(int x0, int y0, int x1, int y1)
     }
 
     int D = (2 * dy) - dx;
-    int y = y0;
+    int y = p.Get_Y();
 
-    for(int x = x0; x < x1; x++)
+    for(int x = p.Get_X(); x <= p2.Get_X(); x++)
     {
         Write_At_Pos(draw_char, x, y);
 
@@ -57,10 +55,10 @@ void Line::Draw_Positive_Slope(int x0, int y0, int x1, int y1)
     }
 }
 
-void Line::Draw_Negative_Slope(int x0, int y0, int x1, int y1)
+void Line::Draw_Negative_Slope(Point p, Point p2)
 {
-    int dx = x1 - x0;
-    int dy = y1 - y0;
+    int dx = p2.Get_X() - p.Get_X();
+    int dy = p2.Get_Y() - p.Get_Y();
     int xi = 1;
 
     if(dx < 0)
@@ -69,9 +67,9 @@ void Line::Draw_Negative_Slope(int x0, int y0, int x1, int y1)
         dx = -dx;
     }
     int D = (2 * dx) - dy;
-    int x = x0;
+    int x = p.Get_X();
 
-    for(int y = y0; y <= y1; y++)
+    for(int y = p.Get_Y(); y <= p2.Get_Y(); y++)
     {    
         Write_At_Pos(draw_char, x, y);
 
@@ -84,4 +82,3 @@ void Line::Draw_Negative_Slope(int x0, int y0, int x1, int y1)
             D += 2 * dx;
     }
 }
-

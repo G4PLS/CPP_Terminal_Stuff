@@ -1,29 +1,18 @@
 #include "shape.h"
 
-Circle::Circle(int xc, int yc, int radius)
+Circle::Circle(Point p, int radius)
 {
-    this->xc = xc;
-    this->yc = yc;
+    this->p = p;
     this->radius = radius;
-    this->temp_x = xc;
-    this->temp_y = yc;
+    this->temp_p = p;
     this->temp_r = radius;
 }
 
-void Circle::Set_X(int x)
-{
-    this->temp_x = x;
-}
+void Circle::Set_X(int x) { this->temp_p.Set_X(x); }
 
-void Circle::Set_Y(int y)
-{
-    this->temp_y = y;
-}
+void Circle::Set_Y(int y) { this->temp_p.Set_Y(y); }
 
-void Circle::Set_Radius(int radius)
-{
-    temp_r = radius;
-}
+void Circle::Set_Radius(int radius) { temp_r = radius; }
 
 void Circle::Draw()
 {
@@ -38,8 +27,7 @@ void Circle::Draw()
 void Circle::Redraw()
 {
     Delete();
-    this->xc = temp_x;
-    this->yc = temp_y;
+    this->p = this->temp_p;
     this->radius = temp_r;
     Draw();
 }
@@ -56,8 +44,10 @@ void Circle::Delete()
 
 void Circle::Place_Points()
 {
-    x = 0;
-    y = radius;
+    int x = 0;
+    int y = radius;
+    int xc = p.Get_X();
+    int yc = p.Get_Y();
     int d = 3 - (2 * radius);
 
     Write_At_Pos(draw_char,  x + xc,  y + yc);
@@ -92,37 +82,23 @@ void Circle::Place_Points()
 
 
 
-Ellipse::Ellipse(int xc, int yc, int rx, int ry)
+Ellipse::Ellipse(Point p, int rx, int ry)
 {
-    this->xc = xc;
-    this->yc = yc;
+    this->p = p;
+    this->temp_p = p;
     this->rx = rx;
     this->ry = ry;
-    this->temp_x = xc;
-    this->temp_y = yc;
     this->temp_rx = rx;
     this->temp_ry = ry;
 }
 
-void Ellipse::Set_X(int x)
-{
-    temp_x = x;
-}
+void Ellipse::Set_X(int x) { this->temp_p.Set_X(x); }
 
-void Ellipse::Set_Y(int y)
-{
-    temp_y = y;
-}
+void Ellipse::Set_Y(int y) { this->temp_p.Set_Y(y); }
 
-void Ellipse::Set_Radius_X(int rx)
-{
-    temp_rx = rx;
-}
+void Ellipse::Set_Radius_X(int rx) { temp_rx = rx; }
 
-void Ellipse::Set_Radius_Y(int ry)
-{
-    temp_ry = ry;
-}
+void Ellipse::Set_Radius_Y(int ry) { temp_ry = ry; }
 
 void Ellipse::Draw()
 {
@@ -135,8 +111,7 @@ void Ellipse::Draw()
 void Ellipse::Redraw()
 {
     Delete();
-    xc = temp_x;
-    yc = temp_y;
+    p = temp_p;
     rx = temp_rx;
     ry = temp_ry;
     Draw();
@@ -154,11 +129,12 @@ void Ellipse::Delete()
 
 void Ellipse::Draw_Points()
 {
-    int p;
-    x = 0;
-    y = ry;
+    int x = 0;
+    int y = ry;
+    int xc = p.Get_X();
+    int yc = p.Get_Y();
 
-    p = (ry * ry) - (rx * rx * ry) + (0.25 * rx * rx);
+    int D = (ry * ry) - (rx * rx * ry) + (0.25 * rx * rx);
 
     do
     {
@@ -167,19 +143,19 @@ void Ellipse::Draw_Points()
         Write_At_Pos(draw_char, -x + xc,  y + yc);
         Write_At_Pos(draw_char, -x + xc, -y + yc);
 
-        if(p < 0)
+        if(D < 0)
         {
             x++;
-            p += 2 * ((ry * ry) * x) + (ry * ry);
+            D += 2 * ((ry * ry) * x) + (ry * ry);
         }
         else{
             x++;
             y--;
-            p += 2 * ((ry * ry) * x) - 2 * ((x * x) * y) + (ry * ry);
+            D += 2 * ((ry * ry) * x) - 2 * ((x * x) * y) + (ry * ry);
         }
     }while(2 * ((ry * ry) * x) < 2 * ((rx * rx) * y));
 
-    p = ((ry * ry) * (x + 0.5) * (x + 0.5)) + ((y - 1) * (y - 1) * (rx * rx) - ((rx * rx) * (ry * ry)));
+    D = ((ry * ry) * (x + 0.5) * (x + 0.5)) + ((y - 1) * (y - 1) * (rx * rx) - ((rx * rx) * (ry * ry)));
 
     do
     {
@@ -188,15 +164,15 @@ void Ellipse::Draw_Points()
         Write_At_Pos(draw_char, -x + xc,  y + yc);
         Write_At_Pos(draw_char, -x + xc, -y + yc);
 
-        if(p > 0)
+        if(D > 0)
         {
             y--;
-            p -= 2 * ((rx * rx) * y) + (rx * rx);
+            D -= 2 * ((rx * rx) * y) + (rx * rx);
         }
         else {
             x++;
             y--;
-            p -= 2 * ((rx * rx) * y) + 2 * ((ry * ry) * x) + (rx * rx);
+            D -= 2 * ((rx * rx) * y) + 2 * ((ry * ry) * x) + (rx * rx);
         }
     }while (y >= 0);
 }

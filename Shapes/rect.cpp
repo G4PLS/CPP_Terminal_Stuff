@@ -1,21 +1,29 @@
 #include "shape.h"
 
-Rect::Rect(int x, int y, int width, int height)
+Rect::Rect(Point p, int width, int height)
 {
-    this->x = x;
-    this->y = y;
+    this->p = p;
+    this->temp_p = p;
     this->width = width;
     this->height = height;
 
     Generate_Lines();
 }
 
+void Rect::Set_X(int x) { this->temp_p.Set_X(x); }
+
+void Rect::Set_Y(int y) { this->temp_p.Set_Y(y); }
+
+void Rect::Set_Width(int width) { this->temp_width = width; }
+
+void Rect::Set_Height(int height) { this->temp_height = height; }
+
 void Rect::Generate_Lines()
 {
-    lines[0] = Line(x, y, x + width, y); //TL-TR
-    lines[1] = Line(x, y, x, y + height); //TÖ-BL
-    lines[2] = Line(x + width, y, x + width, y + height); //TR-BR
-    lines[3] = Line(x, y + height, x + width, y + height); //BL-BR
+    lines[0] = Line(p, Point(p.Get_X() + width, p.Get_Y())); //TL-TR
+    lines[1] = Line(p, Point(p.Get_X(), p.Get_Y() + height)); //TL-BL
+    lines[2] = Line(Point(p.Get_X() + width, p.Get_Y()), Point(p.Get_X() + width, p.Get_Y() + height)); //TR-BR
+    lines[3] = Line(Point(p.Get_X(), p.Get_Y() + height), Point(p.Get_X() + width, p.Get_Y() + height)); //BL-BR
 }
 
 void Rect::Draw()
@@ -34,6 +42,9 @@ void Rect::Draw()
 void Rect::Redraw()
 {
     Delete();
+    p = temp_p;
+    width = temp_width;
+    height = temp_height;
     Generate_Lines();
     Draw();
 }
@@ -49,30 +60,19 @@ void Rect::Delete()
 
 
 
-Mid_Point_Rect::Mid_Point_Rect(int x, int y, int radius)
+Mid_Point_Rect::Mid_Point_Rect(Point p, int radius)
 {
-    this->xc = x;
-    this->yc = y;
+    this->p = p;
     this->radius = radius;
-    this->temp_x = xc;
-    this->temp_y = yc;
+    this->temp_p = p;
     this->temp_r = radius;
 }
 
-void Mid_Point_Rect::Set_X(int x)
-{
-    this->temp_x = x;
-}
+void Mid_Point_Rect::Set_X(int x) { this->temp_p.Set_X(x); }
 
-void Mid_Point_Rect::Set_Y(int y)
-{
-    this->temp_y = y;
-}
+void Mid_Point_Rect::Set_Y(int y) { this->temp_p.Set_Y(y); }
 
-void Mid_Point_Rect::Set_Radius(int radius)
-{
-    this->temp_r = radius;
-}
+void Mid_Point_Rect::Set_Radius(int radius) { this->temp_r = radius; }
 
 void Mid_Point_Rect::Draw()
 {
@@ -87,8 +87,7 @@ void Mid_Point_Rect::Draw()
 void Mid_Point_Rect::Redraw()
 {
     Delete();
-    xc = temp_x;
-    yc = temp_y;
+    p = temp_p;
     radius = temp_r;
     Draw();
 }
@@ -105,7 +104,9 @@ void Mid_Point_Rect::Delete()
 
 void Mid_Point_Rect::Place_Points()
 {
-    x = 0;
+    int x = 0;
+    int xc = p.Get_X();
+    int yc = p.Get_Y();
 
     while(x <= radius)
     {
