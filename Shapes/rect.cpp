@@ -6,6 +6,19 @@ Rect::Rect(Point p, int width, int height)
     this->temp_p = p;
     this->width = width;
     this->height = height;
+    this->temp_width = width;
+    this->temp_height = height;
+
+    Generate_Lines();
+}
+
+Rect::Rect(Point p, Point p1)
+{
+    this->p = p;
+    this->temp_p = p;
+
+    this->width = p1.Get_X() - p.Get_X();
+    this->height = p1.Get_Y() - p.Get_Y();
 
     Generate_Lines();
 }
@@ -17,14 +30,6 @@ void Rect::Set_Y(int y) { this->temp_p.Set_Y(y); }
 void Rect::Set_Width(int width) { this->temp_width = width; }
 
 void Rect::Set_Height(int height) { this->temp_height = height; }
-
-void Rect::Generate_Lines()
-{
-    lines[0] = Line(p, Point(p.Get_X() + width, p.Get_Y())); //TL-TR
-    lines[1] = Line(p, Point(p.Get_X(), p.Get_Y() + height)); //TL-BL
-    lines[2] = Line(Point(p.Get_X() + width, p.Get_Y()), Point(p.Get_X() + width, p.Get_Y() + height)); //TR-BR
-    lines[3] = Line(Point(p.Get_X(), p.Get_Y() + height), Point(p.Get_X() + width, p.Get_Y() + height)); //BL-BR
-}
 
 void Rect::Draw()
 {
@@ -56,6 +61,14 @@ void Rect::Delete()
     lines[1].Draw(' ');
     lines[2].Draw(' ');
     lines[3].Draw(' ');
+}
+
+void Rect::Generate_Lines()
+{
+    lines[0] = Line(p, Point(p.Get_X() + width, p.Get_Y())); //TL-TR
+    lines[1] = Line(p, Point(p.Get_X(), p.Get_Y() + height)); //TL-BL
+    lines[2] = Line(Point(p.Get_X() + width, p.Get_Y()), Point(p.Get_X() + width, p.Get_Y() + height)); //TR-BR
+    lines[3] = Line(Point(p.Get_X(), p.Get_Y() + height), Point(p.Get_X() + width, p.Get_Y() + height)); //BL-BR
 }
 
 

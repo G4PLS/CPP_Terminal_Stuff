@@ -1,21 +1,24 @@
 #include <iostream>
 #include "terminal_utils.h"
 #include "Shapes/shape.h"
+#include "image.h"
+
+#include <array>
+
+#include <fstream>
+#include <sstream>
+#include <string>
 
 int main()
 {
     char x;
 
-    Screen::Clear();
-    Cursor::Reset();
-    
-    Triangle t(Point(10, 5), Point(21, 5), Point(16, 10));
-    t.Draw();
-    std::cin >> x;
-    t.Set_X(1);
-    t.Set_Y(1);
-    t.Redraw();
+    Image i("/home/gapls/Documents/Programming/cpp/TerminalStuff/testPPM.ppm", Point(0, 0), 200, 50);
+    i.Load();
+    i.Draw();
 
-    Cursor::Set(0, 25);
+    Cursor::Down(1);
+    Cursor::Next_Line(1);
+
     return -1;
 }

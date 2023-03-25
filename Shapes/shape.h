@@ -5,6 +5,7 @@
 
 class Point
 {
+    private:
     int x = 0;
     int y = 0;
 
@@ -66,6 +67,7 @@ class Rect : public Shape
 
     public:
     Rect(Point p, int width, int height);
+    Rect(Point p, Point p1);
     void Set_X(int x);
     void Set_Y(int y);
     void Set_Width(int widht);
