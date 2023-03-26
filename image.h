@@ -27,7 +27,7 @@ class Image
     void Set_Y(int y);
     void Set_Width(int width);
     void Set_Height(int height);
-    void Load(); // STILL NEEDS TO REMOVE HEADER BEFORE LOADING
+    void Load();
     void Draw();
     void Redraw();
     void Delete();
